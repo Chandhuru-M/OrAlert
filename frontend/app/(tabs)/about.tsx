@@ -5,7 +5,7 @@ import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-nativ
 export default function AboutScreen() {
   return (
     <ImageBackground
-      source={require('../../assets/images/bg7.jpg')}
+      source={require('../../assets/images/bg12.jpg')}
       style={styles.background}
     >
       <View style={styles.overlay}>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.0)',
+    backgroundColor: 'rgba(255,255,255,1.0  )',
   },
   container: {
     paddingVertical: 30,

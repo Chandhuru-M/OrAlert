@@ -14,9 +14,14 @@ import {
 } from 'react-native';
 
 
+type Prediction = {
+  prediction: string;
+  confidence: string;
+};
+
 export default function HomeScreen() {
-  const [image, setImage] = useState(null);
-  const [prediction, setPrediction] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
+  const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -57,17 +62,17 @@ export default function HomeScreen() {
 
     setLoading(true);
     const formData = new FormData();
-    formData.append("image", {
-      uri: image,
-      name: "oral.jpg",
-      type: "image/jpeg",
-    });
 
+    // Fetch the image as a blob
     try {
-      const response = await axios.post("http://192.168.1.3:5000/predict", formData, {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      formData.append("image", blob, "oral.jpg");
+
+      const apiResponse = await axios.post("https://oralert.onrender.com/predict", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setPrediction(response.data);
+      setPrediction(apiResponse.data);
     } catch (error) {
       Alert.alert("Prediction Error", "Could not get prediction.");
     } finally {
@@ -77,7 +82,7 @@ export default function HomeScreen() {
 
   return (
   <ImageBackground
-  source={require('../../assets/images/bg10.jpg')}
+  source={require('../../assets/images/bg17.jpg')}
   style={styles.background}
   resizeMode="cover"
   >
@@ -159,7 +164,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.0)', // white transparent overlay for readability
+    backgroundColor: 'rgba(255,255,255,0.0)', 
   },
   container: {
     padding: 24,
